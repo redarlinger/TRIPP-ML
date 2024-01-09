@@ -26,18 +26,31 @@ for path in test_paths:
     f = open(f"{path}/1.txt", "r")
     lines = f.readlines()
     f.close()
+    difference= scores-lines
+    if difference>0: #see if the model found more than the correct transients (checking for false positives)
+	for i in range(difference):
+	    acc.append([
+             img_path,
+             0,  # using the score for the entry
+             True,  # if deviates more than 20 pixels
+             0,  # true x-center
+             0,  # true y-center
+             false positive,  # predicted x-center
+             false positive,  # predicted y-center
+            ])
+
 
     for line in lines:
         ground_truth = [400 * float(line.split()[1]), 400 * float(line.split()[2])]  # getting the true locations
         false_positive = True
         center1=[0,0]
         score1=
-
+      
         for score, box in zip(scores, boxes):
             center = box[0] + box[2] / 2, box[1] + box[3] / 2  # box = x-topLeft, y-topLeft, width, height
 
             if abs(ground_truth[0] - center[0]) <= 20 and abs(ground_truth[1] - center[1]) <= 20:
-                false_positive = False #checking to see if any of the predictions match with this ground truth
+                false_positive = False #checking to see if any of the predictions match with this ground truth (checking for false negatives)
                 center1=center
                 score1=score
 
