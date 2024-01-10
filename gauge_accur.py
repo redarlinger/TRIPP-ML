@@ -5,13 +5,13 @@ import pandas as pd
 #this is set up for the yolov4 model in luckystar
 
 net = cv2.dnn.readNetFromDarknet(
-    '/mnt/annex/rachel/YOLO_data/darknet/cfg/yolov4_stars.cfg', 
-    '/mnt/annex/rachel/YOLO_data/darknet/backup/yolov4_stars_last.weights')
+    'cfg/yolov4_stars.cfg', 
+    'backup/yolov4_stars_multi.weights')
 
 model = cv2.dnn_DetectionModel(net)
 model.setInputParams(scale=1 / 255, size=(416, 416), swapRB=True)
 
-test_file = "/mnt/annex/rachel/YOLO_data/Multi_trans/sets/testMultiTrans.txt"
+test_file = "Multi_trans/sets/testMultiTransnew.txt"
 test_paths = []
 with open(test_file) as f:
   test_paths = [l.replace("\n","").replace("/1.png","") for l in f.readlines()] #taking off the 1.png so it can see both png and text
@@ -44,7 +44,7 @@ for path in test_paths:
         ground_truth = [400 * float(line.split()[1]), 400 * float(line.split()[2])]  # getting the true locations
         false_positive = True
         center1=[0,0]
-        score1=
+        score1=[]
       
         for score, box in zip(scores, boxes):
             center = box[0] + box[2] / 2, box[1] + box[3] / 2  # box = x-topLeft, y-topLeft, width, height
