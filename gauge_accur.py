@@ -26,7 +26,7 @@ for path in test_paths:
     f = open(f"{path}/1.txt", "r")
     lines = f.readlines()
     f.close()
-    difference= scores-lines
+    difference= len(scores)-len(lines)
     if difference>0: #see if the model found more than the correct transients (checking for false positives)
 	for i in range(difference):
 	    acc.append([
@@ -35,8 +35,8 @@ for path in test_paths:
              True,  # if deviates more than 20 pixels
              0,  # true x-center
              0,  # true y-center
-             false positive,  # predicted x-center
-             false positive,  # predicted y-center
+             "false positive",  # predicted x-center
+             "false positive",  # predicted y-center
             ])
 
 
@@ -69,5 +69,3 @@ pd.DataFrame(
     columns=['img', 'confidence', 'false pos', 'true x', 'true y', 'pred x', 'pred y']
 ).to_csv(f'/mnt/annex/rachel/YOLO_data/darknet/performance.csv')
 
-  
-    co y','pred x','p.to_csv(f'/mnt/annex/rachel/YOLO_data/darknet/performance.csv')
