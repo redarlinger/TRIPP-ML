@@ -1,5 +1,5 @@
 """**Creating the label directory list**"""
-
+import numpy
 import random
 import glob
 import os
@@ -10,9 +10,11 @@ import os
 paths = []
 abs_dir = '/mnt/annex/YOLO_data/darknet/Multi_trans/'
 
-pairs = glob.glob(f'{abs_dir}residual_pngs/*')
-for p in pairs:
-    paths.append(f'{p}/1.fits.png')
+groups = glob.glob(f'{abs_dir}residual_pngs/*')
+for g in groups:
+    pairs=glob.glob(f'{g}/*')
+    for p in pairs:
+    	paths.append(f'{p}/1.fits.png')
 
 # scamble paths so we can randomly assign training and val sets
 random.shuffle(paths)
@@ -37,15 +39,15 @@ sets_dir=os.path.join(abs_dir, 'sets')
 if not os.path.exists(sets_dir):
     os.makedirs(sets_dir)
 
-with open(os.path.join(sets_dir, "trainMultiTrans.txt"), "w") as textfile:
+with open(os.path.join(sets_dir, "trainMultiTransnew.txt"), "w") as textfile:
     for element in train:
         textfile.write(element + "\n")
 
-with open(os.path.join(sets_dir, "valMultiTrans.txt"), "w") as textfile:
+with open(os.path.join(sets_dir, "valMultiTransnew.txt"), "w") as textfile:
     for element in val:
         textfile.write(element + "\n")
 
-with open(os.path.join(sets_dir, "testMultiTrans.txt"), "w") as textfile:
+with open(os.path.join(sets_dir, "testMultiTransnew.txt"), "w") as textfile:
     for element in test:
         textfile.write(element + "\n")
 
