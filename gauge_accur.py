@@ -23,17 +23,7 @@ for path in test_paths:
     img_path = path + '/1.png'
     img = cv2.imread(img_path)
     classIds, scores, boxes = model.detect(img, confThreshold=0.1, nmsThreshold=0.1)  # model detecting transient
-    if len(classIds) == 0:
-        false_positive = True  # Indicate that there are no detections
-        acc.append([
-            img_path,
-            "not_found",  # using the score for the entry
-            false_positive,  # Indicate no detections
-            "nodetection",  # true x-center
-            "nodetection",  # true y-center
-            "falseneg",  # predicted x-center
-            "falseneg",  # predicted y-center
-            ])
+   
     f = open(f"{path}/1.txt", "r")
     lines = f.readlines()
     f.close()
@@ -68,7 +58,7 @@ for path in test_paths:
     for line in lines:
         ground_truth = [400 * float(line.split()[1]), 400 * float(line.split()[2])]
         # Check if either x-coordinate or y-coordinate is in the accumulator (no match with any detection)
-        if ground_truth[0] not in [entry[3] for entry in acc]:
+        if ground_truth[0] not in [entry[3] for entry in acc] or img_path not in [entry[0] for entry in acc]:
             false_positive=True
             acc.append([
                  img_path,
