@@ -8,6 +8,7 @@ net = cv2.dnn.readNetFromDarknet(
     'cfg/yolov4_stars.cfg', 
     'backup/yolov4_stars_multi.weights')
 
+
 model = cv2.dnn_DetectionModel(net)
 model.setInputParams(scale=1 / 255, size=(416, 416), swapRB=True)
 
@@ -22,7 +23,17 @@ for path in test_paths:
     img_path = path + '/1.png'
     img = cv2.imread(img_path)
     classIds, scores, boxes = model.detect(img, confThreshold=0.1, nmsThreshold=0.1)  # model detecting transient
-
+    if len(classIds) == 0:
+        false_positive = True  # Indicate that there are no detections
+        acc.append([
+            img_path,
+            "not_found",  # using the score for the entry
+            false_positive,  # Indicate no detections
+            "nodetection",  # true x-center
+            "nodetection",  # true y-center
+            "falseneg",  # predicted x-center
+            "falseneg",  # predicted y-center
+            ])
     f = open(f"{path}/1.txt", "r")
     lines = f.readlines()
     f.close()
@@ -76,5 +87,7 @@ pd.DataFrame(
     acc,
     columns=['img', 'confidence', 'false pos', 'true x', 'true y', 'pred x', 'pred y']
 ).to_csv(f'/mnt/annex/rachel/YOLO_data/darknet/performance.csv')
+
+
 
 
